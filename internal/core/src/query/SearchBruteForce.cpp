@@ -84,10 +84,10 @@ PrepareBFDataSet(const dataset::SearchDataset& query_ds,
         query_dataset->SetIsSparse(true);
     } else if (data_type == DataType::VECTOR_BFLOAT16) {
         //todo: if knowhere support real fp16/bf16 bf, remove convert
-        base_dataset =
-            knowhere::ConvertFromDataTypeIfNeeded<bfloat16>(base_dataset);
-        query_dataset =
-            knowhere::ConvertFromDataTypeIfNeeded<bfloat16>(query_dataset);
+        // base_dataset =
+        //     knowhere::ConvertFromDataTypeIfNeeded<bfloat16>(base_dataset);
+        // query_dataset =
+        //     knowhere::ConvertFromDataTypeIfNeeded<bfloat16>(query_dataset);
     } else if (data_type == DataType::VECTOR_FLOAT16) {
         //todo: if knowhere support real fp16/bf16 bf, remove convert
         base_dataset =
@@ -138,7 +138,7 @@ BruteForceSearch(const dataset::SearchDataset& query_ds,
                 base_dataset, query_dataset, search_cfg, bitset);
         } else if (data_type == DataType::VECTOR_BFLOAT16) {
             //todo: if knowhere support real fp16/bf16 bf, change it
-            res = knowhere::BruteForce::RangeSearch<float>(
+            res = knowhere::BruteForce::RangeSearch<knowhere::bf16>(
                 base_dataset, query_dataset, search_cfg, bitset);
         } else if (data_type == DataType::VECTOR_BINARY) {
             res = knowhere::BruteForce::RangeSearch<uint8_t>(
@@ -188,7 +188,7 @@ BruteForceSearch(const dataset::SearchDataset& query_ds,
                 bitset);
         } else if (data_type == DataType::VECTOR_BFLOAT16) {
             //todo: if knowhere support real fp16/bf16 bf, change it
-            stat = knowhere::BruteForce::SearchWithBuf<float>(
+            stat = knowhere::BruteForce::SearchWithBuf<knowhere::bf16>(
                 base_dataset,
                 query_dataset,
                 sub_result.mutable_seg_offsets().data(),
@@ -244,7 +244,7 @@ DispatchBruteForceIteratorByDataType(const knowhere::DataSetPtr& base_dataset,
             break;
         case DataType::VECTOR_BFLOAT16:
             //todo: if knowhere support real fp16/bf16 bf, change it
-            return knowhere::BruteForce::AnnIterator<float>(
+            return knowhere::BruteForce::AnnIterator<knowhere::bf16>(
                 base_dataset, query_dataset, config, bitset, false);
             break;
         case DataType::VECTOR_SPARSE_FLOAT:
