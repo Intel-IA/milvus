@@ -51,6 +51,7 @@ KnowhereInitImpl(const char* conf_file) {
     std::call_once(init_knowhere_once_, init);
 }
 
+
 std::string
 KnowhereSetSimdType(const char* value) {
     knowhere::KnowhereConfig::SimdType simd_type;
@@ -62,6 +63,8 @@ KnowhereSetSimdType(const char* value) {
         simd_type = knowhere::KnowhereConfig::SimdType::AVX2;
     } else if (strcmp(value, "avx") == 0 || strcmp(value, "sse4_2") == 0) {
         simd_type = knowhere::KnowhereConfig::SimdType::SSE4_2;
+    } else if (strcmp(value, "avx") == 0 || strcmp(value, "amx") == 0) {
+        simd_type = knowhere::KnowhereConfig::SimdType::AMX;
     } else {
         PanicInfo(ConfigInvalid, "invalid SIMD type: " + std::string(value));
     }
